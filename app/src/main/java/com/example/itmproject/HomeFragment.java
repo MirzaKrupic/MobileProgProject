@@ -17,6 +17,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import java.util.ArrayList;
+
 public class HomeFragment extends Fragment {
 
     @Nullable
@@ -24,16 +26,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        HomeAd[] menuItems = {new HomeAd(), new HomeAd(), new HomeAd()};
+        ArrayList<ProfileAd> arrayList = new ArrayList<ProfileAd>();
+        ProfileAdAdapter profileAdAdapter = new ProfileAdAdapter(getActivity().getApplicationContext(), arrayList);
+
         ListView listView = (ListView) view.findViewById(R.id.mainMenu);
+        listView.setAdapter(profileAdAdapter);
 
-        ArrayAdapter<HomeAd> listViewAdapter = new ArrayAdapter<HomeAd>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                menuItems
-        );
-
-        listView.setAdapter(listViewAdapter);
+        ProfileAd profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
 
         return view;
     }
