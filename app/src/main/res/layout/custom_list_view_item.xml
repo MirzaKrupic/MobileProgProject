@@ -30,7 +30,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/blank_profile_picture" />
+        tools:srcCompat="@drawable/blank_profile_picture"
+        android:background="@color/colorPrimaryDark"
+        android:padding="5dp"
+        android:scaleType="centerCrop"
+        android:cropToPadding="true"/>
 
     <TextView
         android:id="@+id/item_title"

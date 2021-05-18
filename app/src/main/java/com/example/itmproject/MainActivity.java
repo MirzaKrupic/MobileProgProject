@@ -2,6 +2,7 @@ package com.example.itmproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -11,10 +12,12 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
+    private ChipNavigationBar bar;
     private ViewPager viewPager;
 
     @Override
@@ -22,12 +25,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
-        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
-        viewPager = findViewById(R.id.fragment_container);
-        setUpAdapter(viewPager);
+        //bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
+        bar = findViewById(R.id.bottom_navigation_bar);
+        bar.setItemSelected(R.id.nav_home, true);
+        //bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        /*viewPager = findViewById(R.id.fragment_container);
+        setUpAdapter(viewPager);*/
+        bottomMenu();
+        /*viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -42,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
 
             }
-        });
+        });*/
     }
 
-    private void setUpAdapter(ViewPager viewPager){
+/*    private void setUpAdapter(ViewPager viewPager){
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPageAdapter.addFragment(new HomeFragment());
         viewPageAdapter.addFragment(new DashboardFragment());
@@ -69,6 +76,28 @@ public class MainActivity extends AppCompatActivity {
                     return false;
             }
         }
-    };
+    };*/
+
+    private void bottomMenu(){
+        bar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int i) {
+                Fragment fragment = null;
+                switch (i){
+                    case R.id.nav_home:
+                        fragment = new HomeFragment();
+                        break;
+
+                    case R.id.nav_dashboard:
+                        fragment = new DashboardFragment();
+                        break;
+
+
+                }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+            }
+        });
+    }
 
 }

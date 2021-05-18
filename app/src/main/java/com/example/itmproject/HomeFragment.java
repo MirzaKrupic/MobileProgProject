@@ -34,6 +34,32 @@ public class HomeFragment extends Fragment {
 
         ProfileAd profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
         profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
+        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
+        profileAdAdapter.add(profileAd);
 
         return view;
     }
