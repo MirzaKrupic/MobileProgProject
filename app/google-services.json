@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "528101750232",
+    "project_id": "itmpproject",
+    "storage_bucket": "itmpproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528101750232:android:417c39de2d950b12f3eead",
+        "android_client_info": {
+          "package_name": "com.example.itmproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528101750232-odkp46s4si2q13nmk5vcfa5c0qki120n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCez4cQxt6ljML6Z7aIDBEzK7tTHrwFSHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528101750232-odkp46s4si2q13nmk5vcfa5c0qki120n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
