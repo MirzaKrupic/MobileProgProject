@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
@@ -17,8 +18,9 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private ChipNavigationBar bar;
+    ChipNavigationBar bar;
     private ViewPager viewPager;
+    Long userId = null;
 
 
     @Override
@@ -52,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
     }
-
 /*    private void setUpAdapter(ViewPager viewPager){
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPageAdapter.addFragment(new HomeFragment());
@@ -90,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nav_dashboard:
-                        fragment = new DashboardFragment();
+                        if(userId == null) fragment = new RegisterFragment();
+                        else fragment = new DashboardFragment();
                         break;
 
 

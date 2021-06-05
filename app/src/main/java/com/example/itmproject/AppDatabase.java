@@ -2,13 +2,16 @@ package com.example.itmproject;
 
 import android.content.Context;
 
-import androidx.room.Dao;
 import androidx.room.Database;
-import androidx.room.Insert;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 
-@Database(entities = {User.class}, version = 1, exportSchema = false)
+@Database(
+        version = 1,
+        entities = {User.class}
+
+)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     private static AppDatabase INSTANCE;

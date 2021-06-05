@@ -3,17 +3,20 @@ package com.example.itmproject;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -32,19 +36,24 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.zip.Inflater;
 
 import static android.app.Activity.RESULT_OK;
 
 public class DashboardFragment extends Fragment {
-    private EditText username, emailId, password;
-    private Button btnChoose, btnUpload, btnSignUp, btnSignOut;
+    private Button btnChoose, btnUpload;
     private ImageView imageView;
     private TextView changer;
     private FirebaseAuth mFirebaseAuth;
     private int perspective = 0;
     private Uri filePath;
     private Long checkUser;
+    private AppDatabase _db;
+    private TextView _name, _email, _location, _phone, _description;
+    private FloatingActionButton openOptions;
 
     private final int PICK_IMAGE_REQUEST = 71;
 
@@ -56,64 +65,46 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        btnChoose = (Button) view.findViewById(R.id.btnChoose);
-        btnUpload = (Button) view.findViewById(R.id.btnUpload);
-        imageView = (ImageView) view.findViewById(R.id.imgView);
+        _db = AppDatabase.getInstance(requireActivity());
+        User loggedUser = _db.userDao().getUserById(((MainActivity) Objects.requireNonNull(getActivity())).userId);
+        _description = view.findViewById(R.id.description_text);
+        _email = view.findViewById(R.id.email_text);
+        _name = view.findViewById(R.id.name_text);
+        _phone = view.findViewById(R.id.phone_text);
+        _location = view.findViewById(R.id.location_text);
+        fillTextFields(loggedUser);
 
-        username = view.findViewById(R.id.username);
-        emailId = view.findViewById(R.id.email);
-        password = view.findViewById(R.id.password);
-        btnSignUp = view.findViewById(R.id.signup);
-        btnSignOut = view.findViewById(R.id.signout);
-
-        changer = view.findViewById(R.id.showOther);
-
-        btnSignUp.setOnClickListener(this::signUp);
-
-        changer.setOnClickListener(new View.OnClickListener() {
+        openOptions = view.findViewById(R.id.openOptions);
+        openOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(perspective == 0){
-                    emailId.setVisibility(View.VISIBLE);
-                    btnSignUp.setText("Sign up");
-                    changer.setText("Already have account?");
-                    btnSignUp.setOnClickListener(DashboardFragment.this::signUp);
-                    perspective = 1;
-                }else if(perspective==2){
-                    emailId.setVisibility(View.INVISIBLE);
-                    btnSignUp.setText("Sign in");
-                    changer.setText("Register here");
-                    btnSignUp.setOnClickListener(DashboardFragment.this::signIn);
-                    perspective = 0;
-                }else{
-                    emailId.setVisibility(View.GONE);
-                    username.setVisibility(View.GONE);
-                    btnSignUp.setVisibility(View.GONE);
-                    changer.setVisibility(View.GONE);
-
-                    btnSignOut.setVisibility(View.VISIBLE);
-                    btnChoose.setVisibility(View.VISIBLE);
-                    btnUpload.setVisibility(View.VISIBLE);
-                    imageView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        btnChoose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage();
-            }
-        });
-
-        btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadImage();
+                Intent intent = new Intent(requireActivity(), EditProfile.class);
+                intent.putExtra("USER_ID", ((MainActivity) Objects.requireNonNull(getActivity())).userId);
+                startActivity(intent);
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        User loggedUser = _db.userDao().getUserById(((MainActivity) Objects.requireNonNull(getActivity())).userId);
+        fillTextFields(loggedUser);
+    }
+
+    private void fillTextFields(User loggedUser){
+        if(loggedUser.getName() == null || loggedUser.getName().equals("")) _name.setText("Name not set");
+        else _name.setText(loggedUser.getName());
+        if(loggedUser.getDescription() == null || loggedUser.getDescription().equals("")) _description.setText("Description not set");
+        else _description.setText(loggedUser.getDescription());
+        if(loggedUser.getEmail() == null || loggedUser.getEmail().equals("")) _email.setText("Email not set");
+        else _email.setText(loggedUser.getEmail());
+        if(loggedUser.getLocation() == null || loggedUser.getLocation().equals("")) _location.setText("Location not set");
+        else _location.setText(loggedUser.getLocation());
+        if(loggedUser.getPhone() == null || loggedUser.getPhone().equals("")) _phone.setText("Phone not set");
+        else _phone.setText(loggedUser.getPhone());
     }
 
     private void chooseImage() {
@@ -175,7 +166,7 @@ public class DashboardFragment extends Fragment {
                     });
         }
     }
-
+/*
     private void signUp(View view){
         User user = new User(emailId.getText().toString(), username.getText().toString(), password.getText().toString());
         AppDatabase.getInstance(requireActivity()).userDao().add(user);
@@ -192,5 +183,5 @@ public class DashboardFragment extends Fragment {
             Toast.makeText(requireActivity(), "Invalid credidentials", Toast.LENGTH_SHORT).show();
         }
     }
-
+*/
 }

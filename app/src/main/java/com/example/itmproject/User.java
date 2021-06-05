@@ -12,11 +12,51 @@ public class User {
     private String email;
     private String username;
     private String password;
+    private String name;
+    private String phone;
+    private String location;
+    private String description;
 
     public User(String email, String username, String password) {
         this.email = email;
         this.username = username;
         this.password = password;
+        this.name = null;
+        this.phone = null;
+        this.location = null;
+        this.description = null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public long getId() {
