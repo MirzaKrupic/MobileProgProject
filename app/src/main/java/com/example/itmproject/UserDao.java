@@ -5,6 +5,9 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Dao
 public interface UserDao {
 
@@ -22,6 +25,9 @@ public interface UserDao {
 
     @Query("SELECT * FROM users WHERE id = :id")
     User getUserById(Long id);
+
+    @Query("SELECT * FROM users")
+    List<User> getAllUsers();
 
     @Query("UPDATE users SET name = :name, phone = :phone, description = :description, email = :email, location = :location WHERE id = :id")
     void updateUser(String name, String phone, String description, String email, String location, Long id);

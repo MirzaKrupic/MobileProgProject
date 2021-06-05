@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -32,34 +33,13 @@ public class HomeFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.mainMenu);
         listView.setAdapter(profileAdAdapter);
 
-        ProfileAd profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
-        profileAd = new ProfileAd(R.drawable.blank_profile_picture, "Adis Mackovic", "**Bob the builder!** Can we fix ? **Bob the builder!** YES WE CAN!!!");
-        profileAdAdapter.add(profileAd);
+        ProfileAd profileAd;
+        List<User> users = AppDatabase.getInstance(requireActivity()).userDao().getAllUsers();
+        for(User u : users){
+            profileAd = new ProfileAd(R.drawable.blank_profile_picture, u.getName(), u.getDescription());
+            profileAdAdapter.add(profileAd);
+        }
+
 
         return view;
     }
