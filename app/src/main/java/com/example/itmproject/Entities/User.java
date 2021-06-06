@@ -1,4 +1,4 @@
-package com.example.itmproject;
+package com.example.itmproject.Entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

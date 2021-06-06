@@ -1,11 +1,14 @@
-package com.example.itmproject;
+package com.example.itmproject.Dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
-import java.util.ArrayList;
+import com.example.itmproject.Entities.User;
+import com.example.itmproject.Entities.UserWithCategories;
+
 import java.util.List;
 
 @Dao
