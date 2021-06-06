@@ -1,10 +1,16 @@
 package com.example.itmproject;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,12 +33,20 @@ public class HomeFragment extends Fragment {
 
         ListView listView = (ListView) view.findViewById(R.id.mainMenu);
         listView.setAdapter(profileAdAdapter);
-
+        int i = 0;
         ProfileAd profileAd;
         List<User> users = AppDatabase.getInstance(requireActivity()).userDao().getAllUsers();
         for(User u : users){
             profileAd = new ProfileAd(R.drawable.blank_profile_picture, u.getName(), u.getDescription());
             profileAdAdapter.add(profileAd);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(requireActivity(), UserProfile.class);
+                    intent.putExtra("USER_ID", u.getId());
+                    startActivity(intent);
+                }
+            });
         }
 
 
