@@ -3,6 +3,7 @@ package com.example.itmproject;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -11,10 +12,16 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.itmproject.Entities.Category;
+import com.example.itmproject.Entities.User;
+
+import java.util.List;
 
 public class UserProfile extends AppCompatActivity {
 
@@ -40,46 +47,67 @@ public class UserProfile extends AppCompatActivity {
         location.setText(user.getLocation());
         description.setText(user.getDescription());
 
+        List<Category> categories = AppDatabase.getInstance(UserProfile.this).categoryDao().getAll();
+        for(Category c : categories){
+            description.setText(description.getText().toString() + " " + c.getName());
+        }
+
         btnCall = findViewById(R.id.callButton);
 
         btnCall.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                if(isPermissionGranted()) {
-                    Intent intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse("tel:" + user.getPhone()));
-                    startActivity(intent);
-                }else{
-                    requestCallPermission();
-                }
+            public void onClick(View arg0)
+            {
+                callPhoneNumber();
             }
         });
     }
 
-    private boolean isPermissionGranted(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
-            return false;
-        }else {
-            return true;
+    public void callPhoneNumber()
+    {
+        try
+        {
+            if(Build.VERSION.SDK_INT > 22)
+            {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+
+                    ActivityCompat.requestPermissions(UserProfile.this, new String[]{Manifest.permission.CALL_PHONE}, 101);
+
+                    return;
+                }
+
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:" + phone.getText().toString()));
+                startActivity(callIntent);
+
+            }
+            else {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:" + phone.getText().toString()));
+                startActivity(callIntent);
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestCallPermission(){
-        if(shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)){
-            Toast.makeText(this, "This is some custom explanation", Toast.LENGTH_SHORT).show();
-        }else{
-            requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-        }
-    }
-
-    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
-        if(requestCode == 1){
-            if(grantResults.length>0 && grantResults[1] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Permission is granted, you can read the storage!", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults)
+    {
+        if(requestCode == 101)
+        {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                callPhoneNumber();
+            }
+            else
+            {
+                Log.e("nesto", "Permission not Granted");
             }
         }
     }

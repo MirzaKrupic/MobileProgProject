@@ -13,10 +13,9 @@ import static androidx.room.ForeignKey.CASCADE;
 public class Category {
     @PrimaryKey(autoGenerate = true)
     private long id;
-    private String name;
+    private String name = "Majstor";
 
-    public Category(long id, String name) {
-        this.id = id;
+    public Category(String name) {
         this.name = name;
     }
 
@@ -38,24 +37,24 @@ public class Category {
 
     public static Category[] populateCategories(){
         return new Category[]{
-                new Category(0,"Kitchen"),
-                new Category(1,"Bathroom"),
-                new Category(2,"Electricity"),
-                new Category(3,"Home appliances fix"),
-                new Category(4,"Outdoor"),
-                new Category(5,"Deep clean"),
-                new Category(6,"Water")
+                new Category("Kitchen"),
+                new Category("Bathroom"),
+                new Category("Electricity"),
+                new Category("Home appliances fix"),
+                new Category("Outdoor"),
+                new Category("Deep clean"),
+                new Category("Water")
         };
     }
     public static List<Category> populateCategoriesToList(){
         ArrayList<Category> categories = new ArrayList<Category>();
-        categories.add(new Category(0,"Kitchen"));
-        categories.add(new Category(1,"Bathroom"));
-        categories.add(new Category(2,"Electricity"));
-        categories.add(new Category(3,"Home appliances fix"));
-        categories.add(new Category(4,"Outdoor"));
-        categories.add(new Category(5,"Deep clean"));
-        categories.add(new Category(6,"Water"));
+        categories.add(new Category("Kitchen"));
+        categories.add(new Category("Bathroom"));
+        categories.add(new Category("Electricity"));
+        categories.add(new Category("Home appliances fix"));
+        categories.add(new Category("Outdoor"));
+        categories.add(new Category("Deep clean"));
+        categories.add(new Category("Water"));
         return categories;
     }
 }

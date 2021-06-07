@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.itmproject.Entities.Category;
 import com.example.itmproject.Entities.User;
 
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class HomeFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+
         }
 
 

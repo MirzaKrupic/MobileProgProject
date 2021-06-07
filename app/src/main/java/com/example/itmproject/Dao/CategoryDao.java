@@ -11,12 +11,10 @@ import java.util.List;
 
 @Dao
 public interface CategoryDao {
-    @Insert
-    void insertAll(Category... categories);
-
-    @Query("SELECT * FROM users")
-    List<UserWithCategories> getAllUsersWithCategories();
 
     @Query("SELECT * FROM category")
     List<Category> getAll();
+
+    @Insert
+    void insertAll(Category... dataEntities);
 }

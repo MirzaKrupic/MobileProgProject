@@ -52,6 +52,26 @@ public abstract class AppDatabase extends RoomDatabase {
                     .fallbackToDestructiveMigration() //This will cause data loss every time new version of DB is applied
                     .build();
         }
+
         return INSTANCE;
+    }
+
+    private static AppDatabase buildDatabase(final Context context) {
+        return Room.databaseBuilder(context,
+                AppDatabase.class,
+                "app_database")
+                .addCallback(new Callback() {
+                    @Override
+                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                        super.onCreate(db);
+                        Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                getInstance(context).categoryDao().insertAll(Category.populateCategories());
+                            }
+                        });
+                    }
+                }).allowMainThreadQueries()
+                .build();
     }
 }
