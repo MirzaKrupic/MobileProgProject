@@ -13,7 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.itmproject.Entities.Category;
 import com.example.itmproject.Entities.User;
+
+import java.util.List;
 
 public class RegisterFragment extends Fragment {
     private EditText _email;
@@ -22,6 +25,7 @@ public class RegisterFragment extends Fragment {
     private Button _registerButton;
     private TextView _signInText;
     private AppDatabase _db;
+    private CategoryFragment cat;
 
     public RegisterFragment(){
         super(R.layout.fragment_register);
@@ -34,7 +38,6 @@ public class RegisterFragment extends Fragment {
         _password = (EditText) view.findViewById(R.id.password_input);
         _registerButton = (Button) view.findViewById(R.id.register_button);
         _signInText = (TextView) view.findViewById(R.id.sign_in_text);
-
         _signInText.setOnClickListener(this::switchToLogin);
         _registerButton.setOnClickListener(this::register);
 
@@ -45,6 +48,10 @@ public class RegisterFragment extends Fragment {
         String username = _username.getText().toString();
         String email = _email.getText().toString();
         String password = _password.getText().toString();
+
+        List<Category> categories;
+
+
 
         if(_db.userDao().getUserByUsername(username) != null)
         {

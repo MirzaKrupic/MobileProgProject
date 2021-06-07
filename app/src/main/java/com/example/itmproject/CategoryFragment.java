@@ -66,8 +66,8 @@ public class CategoryFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            List<Category> categories = AppDatabase.getInstance(getContext()).categoryDao().getAll(); //This returns no elements - fix it so we can take this category list from a DB
-            recyclerView.setAdapter(new CategoryRecyclerViewAdapter(Category.populateCategoriesToList())); //This is temporary
+            List<Category> categories = AppDatabase.getInstance(getContext()).categoryDao().getAll();
+            recyclerView.setAdapter(new CategoryRecyclerViewAdapter(categories));
         }
         return view;
     }

@@ -15,18 +15,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.itmproject.Entities.Category;
+import com.example.itmproject.Entities.Review;
+import com.example.itmproject.Entities.ReviewAndUser;
 import com.example.itmproject.Entities.User;
+import com.example.itmproject.Entities.UserAndReview;
 
 import java.util.List;
 
 public class UserProfile extends AppCompatActivity {
 
     TextView name, mail, phone, location, description;
-    Button btnCall;
+    Button btnCall, btnSubmitReview;
+    EditText comment;
+    Spinner grade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +54,6 @@ public class UserProfile extends AppCompatActivity {
         location.setText(user.getLocation());
         description.setText(user.getDescription());
 
-        List<Category> categories = AppDatabase.getInstance(UserProfile.this).categoryDao().getAll();
-        for(Category c : categories){
-            description.setText(description.getText().toString() + " " + c.getName());
-        }
-
         btnCall = findViewById(R.id.callButton);
 
         btnCall.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +62,24 @@ public class UserProfile extends AppCompatActivity {
             public void onClick(View arg0)
             {
                 callPhoneNumber();
+            }
+        });
+
+        btnSubmitReview = findViewById(R.id.submitReview);
+        grade = findViewById(R.id.reviewGrade);
+        comment = findViewById(R.id.reviewComent);
+
+        List<ReviewAndUser> userAndReviews = AppDatabase.getInstance(UserProfile.this).userReviewDao().testiram2();
+        for(ReviewAndUser u : userAndReviews){
+            description.setText(description.getText().toString() + " " + u.review.getComment());
+        }
+
+        btnSubmitReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int submitGrade = Integer.parseInt(grade.getSelectedItem().toString());
+                Review review = new Review(comment.getText().toString(), submitGrade, userId);
+                AppDatabase.getInstance(UserProfile.this).reviewDao().addReview(review);
             }
         });
     }
