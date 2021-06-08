@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.example.itmproject.Entities.ReviewAndUser;
 import com.example.itmproject.Entities.User;
 import com.example.itmproject.Entities.UserAndReview;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfile extends AppCompatActivity {
@@ -34,6 +36,7 @@ public class UserProfile extends AppCompatActivity {
     Button btnCall, btnSubmitReview;
     EditText comment;
     Spinner grade;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +85,18 @@ public class UserProfile extends AppCompatActivity {
                 AppDatabase.getInstance(UserProfile.this).reviewDao().addReview(review);
             }
         });
+
+        ArrayList<Review> arrayList = new ArrayList<Review>();
+        ReviewListAdapter reviewListAdapter = new ReviewListAdapter(UserProfile.this, arrayList);
+
+        listView = findViewById(R.id.reviewsList);
+        listView.setAdapter(reviewListAdapter);
+        List<ReviewAndUser> reviews = AppDatabase.getInstance(UserProfile.this).userReviewDao().testiram2();
+        for(ReviewAndUser r : reviews){
+            reviewListAdapter.add(r.review);
+        }
+
+
     }
 
     public void callPhoneNumber()
