@@ -3,6 +3,7 @@
     <string name="home">Home</string>
     <string name="dashboard">Dashboard</string>
     <string name="notSet">Not Set</string>
+    <string name="a">a</string>
     <string-array name="locations">
         <item>City</item>
         <item>Sarajevo</item>

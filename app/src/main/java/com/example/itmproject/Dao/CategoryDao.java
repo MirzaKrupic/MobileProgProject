@@ -15,6 +15,9 @@ public interface CategoryDao {
     @Query("SELECT * FROM category")
     List<Category> getAll();
 
+    @Query("SELECT * FROM category WHERE name = :name LIMIT 1")
+    Category getByName(String name);
+
     @Insert
     void insertAll(Category... dataEntities);
 }

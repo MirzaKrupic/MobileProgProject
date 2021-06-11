@@ -12,19 +12,19 @@ import static androidx.room.ForeignKey.CASCADE;
 @Entity(tableName = "category")
 public class Category {
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private long catId;
     private String name = "Majstor";
 
     public Category(String name) {
         this.name = name;
     }
 
-    public long getId() {
-        return id;
+    public long getCatId() {
+        return catId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setCatId(long catId) {
+        this.catId = catId;
     }
 
     public String getName() {

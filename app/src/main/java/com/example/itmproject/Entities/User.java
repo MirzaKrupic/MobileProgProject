@@ -16,8 +16,9 @@ public class User {
     private String phone;
     private String location;
     private String description;
+    private Long catId;
 
-    public User(String email, String username, String password) {
+    public User(String email, String username, String password, Long catId) {
         this.email = email;
         this.username = username;
         this.password = password;
@@ -25,6 +26,15 @@ public class User {
         this.phone = null;
         this.location = null;
         this.description = null;
+        this.catId = catId;
+    }
+
+    public Long getCatId() {
+        return catId;
+    }
+
+    public void setCatId(Long catId) {
+        this.catId = catId;
     }
 
     public String getName() {
