@@ -12,11 +12,9 @@ public class UserWithCategories {
     @Embedded public User user;
     @Relation(
             parentColumn = "id",
-            entityColumn = "userid",
+            entityColumn = "catId",
             associateBy = @Junction(
-                    value = UserCategoryCrossref.class,
-                    parentColumn = "userId",
-                    entityColumn = "categoryId"
+                    UserCategoryCrossref.class
             )
     )
     public List<Category> categories;
