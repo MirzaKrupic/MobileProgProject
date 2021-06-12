@@ -30,6 +30,8 @@ import com.example.itmproject.Entities.UserAndReview;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.itmproject.Entities.User;
+
 public class UserProfile extends AppCompatActivity {
 
     TextView name, mail, phone, location, description;

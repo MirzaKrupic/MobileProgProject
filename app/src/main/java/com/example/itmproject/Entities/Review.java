@@ -7,18 +7,18 @@ import androidx.room.PrimaryKey;
 public class Review {
 
     @PrimaryKey(autoGenerate = true)
-    private long reviewid;
+    private long reviewId;
 
     private String comment;
     private int grade;
     private long userId;
 
-    public long getReviewid() {
-        return reviewid;
+    public long getReviewId() {
+        return reviewId;
     }
 
-    public void setReviewid(long reviewid) {
-        this.reviewid = reviewid;
+    public void setReviewId(long reviewId) {
+        this.reviewId = reviewId;
     }
 
     public String getComment() {

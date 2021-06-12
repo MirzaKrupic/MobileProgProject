@@ -9,8 +9,8 @@ public class CategoryAndUser {
     @Embedded
     public Category category;
     @Relation(
-            parentColumn = "id",
-            entityColumn = "catId"
+            parentColumn = "categoryId",
+            entityColumn = "userId"
     )
     public List<User> user;
 }

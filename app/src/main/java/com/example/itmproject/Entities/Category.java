@@ -1,30 +1,27 @@
 package com.example.itmproject.Entities;
 
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static androidx.room.ForeignKey.CASCADE;
-
 @Entity(tableName = "category")
 public class Category {
     @PrimaryKey(autoGenerate = true)
-    private long catId;
+    private long categoryId;
     private String name = "Majstor";
 
     public Category(String name) {
         this.name = name;
     }
 
-    public long getCatId() {
-        return catId;
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCatId(long catId) {
-        this.catId = catId;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {

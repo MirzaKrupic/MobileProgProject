@@ -11,8 +11,8 @@ import java.util.List;
 public class UserWithCategories {
     @Embedded public User user;
     @Relation(
-            parentColumn = "id",
-            entityColumn = "catId",
+            parentColumn = "userId",
+            entityColumn = "categoryId",
             associateBy = @Junction(
                     UserCategoryCrossref.class
             )

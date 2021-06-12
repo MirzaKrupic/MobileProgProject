@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import com.example.itmproject.Entities.Category;
 
@@ -14,10 +13,10 @@ import java.util.List;
 
 public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Category> mValues;
+    private final List<Category> _categoryList;
 
     public CategoryRecyclerViewAdapter(List<Category> items) {
-        mValues = items;
+        _categoryList = items;
     }
 
     @Override
@@ -29,13 +28,13 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.checkBox.setText(mValues.get(position).getName());
+        holder.mItem = _categoryList.get(position);
+        holder.checkBox.setText(_categoryList.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return _categoryList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

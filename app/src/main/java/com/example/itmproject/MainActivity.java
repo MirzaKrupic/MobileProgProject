@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.itmproject.Entities.Category;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
@@ -23,13 +24,15 @@ public class MainActivity extends AppCompatActivity {
     ChipNavigationBar bar;
     private ViewPager viewPager;
     Long userId = null;
-
+    private AppDatabase _db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        _db = AppDatabase.getInstance(this);
+        if(_db.categoryDao().getAll().isEmpty())
+            _db.categoryDao().insertAll(Category.populateCategories());
 
         //bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
         bar = findViewById(R.id.bottom_navigation_bar);

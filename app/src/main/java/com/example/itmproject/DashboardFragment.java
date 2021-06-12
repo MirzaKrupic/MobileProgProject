@@ -18,7 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.itmproject.Entities.Category;
 import com.example.itmproject.Entities.User;
+import com.example.itmproject.Entities.UserWithCategories;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -64,6 +67,10 @@ public class DashboardFragment extends Fragment {
         _phone = view.findViewById(R.id.phone_text);
         _location = view.findViewById(R.id.location_text);
         fillTextFields(loggedUser);
+
+        List<Category> cs = _db.categoryDao().getAll();
+        List<User> us = _db.userDao().getAllUsers();
+        List<UserWithCategories> c = _db.userCategoryDao().getUsersWithCategory();
 
         openOptions = view.findViewById(R.id.openOptions);
         openOptions.setOnClickListener(new View.OnClickListener() {

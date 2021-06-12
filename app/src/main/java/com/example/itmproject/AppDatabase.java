@@ -21,7 +21,7 @@ import com.example.itmproject.Entities.UserCategoryCrossref;
 import java.util.concurrent.Executors;
 
 @Database(
-        version = 6,
+        version = 10,
         entities = {
                 User.class,
                 Category.class,
@@ -43,42 +43,10 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getInstance(Context context){
         if(INSTANCE == null){
             INSTANCE = Room.databaseBuilder(context, AppDatabase.class, "app_database")
-                    .addCallback(new Callback() {
-                        @Override
-                        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                            super.onCreate(db);
-                            Executors.newSingleThreadExecutor().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getInstance(context).categoryDao().insertAll(Category.populateCategories());
-                                }
-                            });
-                        }
-                    })
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration() //This will cause data loss every time new version of DB is applied
                     .build();
         }
-
         return INSTANCE;
-    }
-
-    private static AppDatabase buildDatabase(final Context context) {
-        return Room.databaseBuilder(context,
-                AppDatabase.class,
-                "app_database")
-                .addCallback(new Callback() {
-                    @Override
-                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                        super.onCreate(db);
-                        Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                getInstance(context).categoryDao().insertAll(Category.populateCategories());
-                            }
-                        });
-                    }
-                }).allowMainThreadQueries()
-                .build();
     }
 }

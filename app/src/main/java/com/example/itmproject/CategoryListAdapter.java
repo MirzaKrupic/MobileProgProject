@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.example.itmproject.Entities.Category;
 import com.example.itmproject.Entities.Review;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CategoryListAdapter extends ArrayAdapter<Category> {
@@ -25,14 +26,14 @@ public class CategoryListAdapter extends ArrayAdapter<Category> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Category profileAd = getItem(position);
+        Category category = getItem(position);
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.custom_list_view_category, parent, false);
         }
 
         CheckBox checkBox = convertView.findViewById(R.id.categoryBox);
 
-        checkBox.setText(profileAd.getName());
+        checkBox.setText(category.getName());
 
 
         return convertView;

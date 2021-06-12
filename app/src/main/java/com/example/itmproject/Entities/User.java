@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 public class User {
 
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private long userId;
 
     private String email;
     private String username;
@@ -18,7 +18,7 @@ public class User {
     private String description;
     private Long catId;
 
-    public User(String email, String username, String password, Long catId) {
+    public User(String email, String username, String password) {
         this.email = email;
         this.username = username;
         this.password = password;
@@ -26,7 +26,6 @@ public class User {
         this.phone = null;
         this.location = null;
         this.description = null;
-        this.catId = catId;
     }
 
     public Long getCatId() {
@@ -36,6 +35,16 @@ public class User {
     public void setCatId(Long catId) {
         this.catId = catId;
     }
+
+    /*public User(String email, String username, String password, String name, String phone, String location) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.location = location;
+        this.description = null;
+    }*/
 
     public String getName() {
         return name;
@@ -69,12 +78,12 @@ public class User {
         this.description = description;
     }
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
