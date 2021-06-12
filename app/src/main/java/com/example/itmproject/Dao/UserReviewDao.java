@@ -15,6 +15,6 @@ import java.util.List;
 public interface UserReviewDao {
 
     @Transaction
-    @Query("SELECT * FROM reviews")
-    public List<ReviewAndUser> testiram2();
+    @Query("SELECT * FROM reviews WHERE userId  = :userId")
+    public List<ReviewAndUser> getUserReviews(Long userId);
 }

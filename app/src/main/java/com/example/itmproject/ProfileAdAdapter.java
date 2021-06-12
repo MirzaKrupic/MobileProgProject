@@ -35,4 +35,5 @@ public class ProfileAdAdapter extends ArrayAdapter<ProfileAd> {
 
         return convertView;
     }
+
 }

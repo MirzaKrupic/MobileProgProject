@@ -21,7 +21,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.itmproject.Entities.CategoriyAndCategorized;
+import com.example.itmproject.Entities.Categorized;
 import com.example.itmproject.Entities.Category;
+import com.example.itmproject.Entities.CategoryAndUser;
 import com.example.itmproject.Entities.Review;
 import com.example.itmproject.Entities.ReviewAndUser;
 import com.example.itmproject.Entities.User;
@@ -31,10 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.itmproject.Entities.User;
+import com.example.itmproject.Entities.UserWithCategories;
 
 public class UserProfile extends AppCompatActivity {
 
-    TextView name, mail, phone, location, description;
+    TextView name, mail, phone, location, description, categories;
     Button btnCall, btnSubmitReview;
     EditText comment;
     Spinner grade;
@@ -49,15 +53,21 @@ public class UserProfile extends AppCompatActivity {
         phone = findViewById(R.id.userPhone);
         location = findViewById(R.id.userLocation);
         description = findViewById(R.id.userDescription);
+        categories = findViewById(R.id.userCategories);
 
         Long userId = getIntent().getLongExtra("USER_ID", -1);
         User user = AppDatabase.getInstance(this).userDao().getUserById(userId);
 
-        name.setText(user.getName());
-        mail.setText(user.getEmail());
-        phone.setText(user.getPhone());
-        location.setText(user.getLocation());
-        description.setText(user.getDescription());
+        if(user.getName() != null && !user.getName().equals("")) name.setText(user.getName());
+        else name.setText("Name not set");
+        if(user.getEmail() != null && !user.getEmail().equals("")) mail.setText(user.getEmail());
+        else mail.setText("E-mail not set");
+        if(user.getPhone() != null && !user.getPhone().equals("")) phone.setText(user.getPhone());
+        else phone.setText("Phone number not set");
+        if(user.getLocation() != null && !user.getLocation().equals("")) location.setText(user.getLocation());
+        else location.setText("Location not set");
+        if(user.getDescription() != null && !user.getDescription().equals("")) description.setText(user.getDescription());
+        else description.setText("Description not set");
 
         btnCall = findViewById(R.id.callButton);
 
@@ -74,9 +84,13 @@ public class UserProfile extends AppCompatActivity {
         grade = findViewById(R.id.reviewGrade);
         comment = findViewById(R.id.reviewComent);
 
-        List<ReviewAndUser> userAndReviews = AppDatabase.getInstance(UserProfile.this).userReviewDao().testiram2();
-        for(ReviewAndUser u : userAndReviews){
-            description.setText(description.getText().toString() + " " + u.review.getComment());
+        List<Categorized> categorizeds = AppDatabase.getInstance(UserProfile.this).categorizedDaoDao().getCategorizedByUserId(userId);
+        List<CategoriyAndCategorized> userWithCategories = new ArrayList<CategoriyAndCategorized>();
+        for(Categorized c : categorizeds){
+            userWithCategories.add(AppDatabase.getInstance(UserProfile.this).userCategorizedDao().oneCategoryByUser(c.getCategoryId()));
+        }
+        for(int i = 0; i < userWithCategories.size(); i++){
+            description.setText(categories.getText() + " " + userWithCategories.get(i).category.getName());
         }
 
         btnSubmitReview.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +107,7 @@ public class UserProfile extends AppCompatActivity {
 
         listView = findViewById(R.id.reviewsList);
         listView.setAdapter(reviewListAdapter);
-        List<ReviewAndUser> reviews = AppDatabase.getInstance(UserProfile.this).userReviewDao().testiram2();
+        List<ReviewAndUser> reviews = AppDatabase.getInstance(UserProfile.this).userReviewDao().getUserReviews(userId);
         for(ReviewAndUser r : reviews){
             reviewListAdapter.add(r.review);
         }

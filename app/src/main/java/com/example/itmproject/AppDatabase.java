@@ -8,11 +8,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.itmproject.Dao.CategorizedDao;
 import com.example.itmproject.Dao.CategoryDao;
 import com.example.itmproject.Dao.ReviewDao;
+import com.example.itmproject.Dao.UserCategorizedDao;
 import com.example.itmproject.Dao.UserCategoryDao;
 import com.example.itmproject.Dao.UserDao;
 import com.example.itmproject.Dao.UserReviewDao;
+import com.example.itmproject.Entities.Categorized;
 import com.example.itmproject.Entities.Category;
 import com.example.itmproject.Entities.Review;
 import com.example.itmproject.Entities.User;
@@ -26,7 +29,8 @@ import java.util.concurrent.Executors;
                 User.class,
                 Category.class,
                 UserCategoryCrossref.class,
-                Review.class
+                Review.class,
+                Categorized.class
         },
         exportSchema = false
 
@@ -37,6 +41,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserCategoryDao userCategoryDao();
     public abstract UserReviewDao userReviewDao();
     public abstract ReviewDao reviewDao();
+    public abstract CategorizedDao categorizedDaoDao();
+    public abstract UserCategorizedDao userCategorizedDao();
 
     private static AppDatabase INSTANCE;
 

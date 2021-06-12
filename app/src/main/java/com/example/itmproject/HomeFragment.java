@@ -1,5 +1,6 @@
 package com.example.itmproject;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -59,19 +60,22 @@ public class HomeFragment extends Fragment {
         listView.setAdapter(profileAdAdapter);
         int i = 0;
         ProfileAd profileAd;
+        List<Long> ids = new ArrayList<Long>();
         for(User u : users){
             profileAd = new ProfileAd(R.drawable.blank_profile_picture, u.getName(), u.getDescription());
             profileAdAdapter.add(profileAd);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(requireActivity(), UserProfile.class);
-                    intent.putExtra("USER_ID", u.getUserId());
-                    startActivity(intent);
-                }
-            });
+            ids.add(u.getUserId());
 
         }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ProfileAd item = (ProfileAd)listView.getAdapter().getItem(position);
+                Intent intent = new Intent(requireActivity(), UserProfile.class);
+                intent.putExtra("USER_ID", ids.get(position));
+                startActivity(intent);
+            }
+        });
     }
 
 

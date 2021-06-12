@@ -1,6 +1,7 @@
 package com.example.itmproject;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.itmproject.Entities.Categorized;
 import com.example.itmproject.Entities.Category;
 import com.example.itmproject.Entities.User;
 import com.example.itmproject.Entities.UserCategoryCrossref;
@@ -37,6 +39,7 @@ public class RegisterFragment extends Fragment {
     private CategoryFragment cat;
     private ListView _categoryList;
     private ArrayList<Integer> _checkedCategories;
+    private ArrayList<String> cats;
 
     public RegisterFragment(){
         super(R.layout.fragment_register);
@@ -64,15 +67,11 @@ public class RegisterFragment extends Fragment {
         List<Category> categories = _db.categoryDao().getAll();
         CategoryListAdapter categoryListAdapter = new CategoryListAdapter(getActivity().getApplicationContext(), arrayList);
         _categoryList.setAdapter(categoryListAdapter);
+        for(Category c : categories){
+            categoryListAdapter.add(c);
+        }
 
-        _categoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                _checkedCategories.add(position);
-            }
-        });
 
-        categoryListAdapter.addAll(categories);
     }
 
     public void register(View view){
@@ -82,6 +81,18 @@ public class RegisterFragment extends Fragment {
         //String fullName = _fullName.getText().toString();
         //String phone = _phone.getText().toString();
         //String location = _location.getText().toString();
+        View v;
+        CheckBox checkBox;
+        cats = new ArrayList<String>();
+        for (int i = 0; i < _categoryList.getCount(); i++) {
+            if((CheckBox)_categoryList.getChildAt(i).findViewById(R.id.categoryBox) != null){
+                CheckBox cBox=(CheckBox)_categoryList.getChildAt(i).findViewById(R.id.categoryBox);
+                if(cBox.isChecked()){
+                    cats.add(cBox.getText().toString());
+                }
+            }
+
+        }
 
         if(_db.userDao().getUserByUsername(username) != null)
         {
@@ -91,15 +102,18 @@ public class RegisterFragment extends Fragment {
 
         User user = new User(email, username, password);
 
-        for (int i = 0; i < _checkedCategories.size(); i++) {
-            _db.userCategoryDao().add(new UserCategoryCrossref(user.getUserId(), (long)i));
-        }
-
         _db.userDao().add(user);
         Toast.makeText(requireActivity(), "Successful registration", Toast.LENGTH_SHORT).show();
 
         ((MainActivity)getActivity()).userId = _db.userDao().loginUser(username, password);
-
+        Long category;
+        for(String s : cats){
+             category = _db.categoryDao().getByName(s);
+             Categorized categorized = new Categorized(((MainActivity)getActivity()).userId, category );
+             Log.e("User ID:", ""+categorized.getUserId());
+            Log.e("Category ID:", ""+categorized.getCategoryId());
+            _db.categorizedDaoDao().addCategorized(categorized);
+        }
         ((MainActivity)getActivity()).bar.setItemSelected(R.id.nav_home, true);
     }
 

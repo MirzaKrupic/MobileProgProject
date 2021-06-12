@@ -20,6 +20,14 @@ public interface UserCategoryDao {
     @Query("SELECT * FROM users")
     public List<UserWithCategories> getUsersWithCategory();
 
+    @Transaction
+    @Query("SELECT * FROM users WHERE userId = :id")
+    public List<UserWithCategories> getUsersWithCategoryById(Long id);
+
+    @Transaction
+    @Query("SELECT * FROM category")
+    public List<CategoryAndUser> getCategoryWithUser();
+
     @Insert
     void add(UserCategoryCrossref userCategoryCrossref);
 }
