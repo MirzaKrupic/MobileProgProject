@@ -83,7 +83,7 @@ public class UserProfile extends AppCompatActivity {
         for(Categorized c : categorizeds){
             userWithCategories.add(AppDatabase.getInstance(UserProfile.this).userCategorizedDao().oneCategoryByUser(c.getCategoryId()));
         }
-        for(int i = 1; i < userWithCategories.size(); i++){
+        for(int i = 0; i < userWithCategories.size(); i++){
             categories.setText(categories.getText() + " " + userWithCategories.get(i).category.getName());
         }
 
