@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ITMproject</string>
+    <string name="app_name">SeekFix</string>
     <string name="home">Home</string>
     <string name="dashboard">Dashboard</string>
     <string name="notSet">Not Set</string>

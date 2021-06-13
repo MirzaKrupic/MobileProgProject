@@ -71,14 +71,21 @@ public class UserProfile extends AppCompatActivity {
 
         btnCall = findViewById(R.id.callButton);
 
-        btnCall.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View arg0)
-            {
-                callPhoneNumber();
-            }
-        });
+        if(user.getPhone() != null && !user.getPhone().equals("")){
+            btnCall.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View arg0)
+                {
+                    callPhoneNumber();
+                }
+            });
+        }else{
+            btnCall.setEnabled(false);
+        }
+
+
 
         btnSubmitReview = findViewById(R.id.submitReview);
         grade = findViewById(R.id.reviewGrade);
@@ -90,8 +97,9 @@ public class UserProfile extends AppCompatActivity {
             userWithCategories.add(AppDatabase.getInstance(UserProfile.this).userCategorizedDao().oneCategoryByUser(c.getCategoryId()));
         }
         for(int i = 0; i < userWithCategories.size(); i++){
-            description.setText(categories.getText() + " " + userWithCategories.get(i).category.getName());
+            categories.setText(categories.getText() + " " + userWithCategories.get(i).category.getName());
         }
+
 
         btnSubmitReview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +107,15 @@ public class UserProfile extends AppCompatActivity {
                 int submitGrade = Integer.parseInt(grade.getSelectedItem().toString());
                 Review review = new Review(comment.getText().toString(), submitGrade, userId);
                 AppDatabase.getInstance(UserProfile.this).reviewDao().addReview(review);
+                ArrayList<Review> arrayList = new ArrayList<Review>();
+                ReviewListAdapter reviewListAdapter = new ReviewListAdapter(UserProfile.this, arrayList);
+
+                listView = findViewById(R.id.reviewsList);
+                listView.setAdapter(reviewListAdapter);
+                List<ReviewAndUser> reviews = AppDatabase.getInstance(UserProfile.this).userReviewDao().getUserReviews(userId);
+                for(ReviewAndUser r : reviews){
+                    reviewListAdapter.add(r.review);
+                }
             }
         });
 
