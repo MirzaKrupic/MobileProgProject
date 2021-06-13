@@ -1,10 +1,7 @@
 package com.example.itmproject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,22 +16,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.itmproject.Entities.CategoriyAndCategorized;
 import com.example.itmproject.Entities.Categorized;
-import com.example.itmproject.Entities.Category;
-import com.example.itmproject.Entities.CategoryAndUser;
 import com.example.itmproject.Entities.Review;
 import com.example.itmproject.Entities.ReviewAndUser;
 import com.example.itmproject.Entities.User;
-import com.example.itmproject.Entities.UserAndReview;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.itmproject.Entities.User;
-import com.example.itmproject.Entities.UserWithCategories;
 
 public class UserProfile extends AppCompatActivity {
 
@@ -71,7 +61,6 @@ public class UserProfile extends AppCompatActivity {
 
         btnCall = findViewById(R.id.callButton);
 
-
         if(user.getPhone() != null && !user.getPhone().equals("")){
             btnCall.setOnClickListener(new View.OnClickListener() {
 
@@ -85,8 +74,6 @@ public class UserProfile extends AppCompatActivity {
             btnCall.setEnabled(false);
         }
 
-
-
         btnSubmitReview = findViewById(R.id.submitReview);
         grade = findViewById(R.id.reviewGrade);
         comment = findViewById(R.id.reviewComent);
@@ -96,10 +83,9 @@ public class UserProfile extends AppCompatActivity {
         for(Categorized c : categorizeds){
             userWithCategories.add(AppDatabase.getInstance(UserProfile.this).userCategorizedDao().oneCategoryByUser(c.getCategoryId()));
         }
-        for(int i = 0; i < userWithCategories.size(); i++){
+        for(int i = 1; i < userWithCategories.size(); i++){
             categories.setText(categories.getText() + " " + userWithCategories.get(i).category.getName());
         }
-
 
         btnSubmitReview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,8 +114,6 @@ public class UserProfile extends AppCompatActivity {
         for(ReviewAndUser r : reviews){
             reviewListAdapter.add(r.review);
         }
-
-
     }
 
     public void callPhoneNumber()
@@ -164,8 +148,7 @@ public class UserProfile extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults)
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
     {
         if(requestCode == 101)
         {

@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -27,26 +26,16 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.itmproject.Entities.Categorized;
 import com.example.itmproject.Entities.Category;
 import com.example.itmproject.Entities.User;
-import com.example.itmproject.Entities.UserCategoryCrossref;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RegisterFragment extends Fragment {
+    private AppDatabase _db;
     private EditText _email;
     private EditText _username;
     private EditText _password;
-    private EditText _fullName;
-    private EditText _phone;
-    private EditText _location;
-    private Button _registerButton;
-    private Button _categoriesButton;
-    private TextView _signInText;
-    private AppDatabase _db;
-    private CategoryFragment cat;
     private ListView _categoryList;
-    private ArrayList<Integer> _checkedCategories;
-    private ArrayList<String> cats;
 
     public RegisterFragment(){
         super(R.layout.fragment_register);
@@ -58,27 +47,21 @@ public class RegisterFragment extends Fragment {
         _email = (EditText) view.findViewById(R.id.emal_input);
         _username = (EditText) view.findViewById(R.id.username_input);
         _password = (EditText) view.findViewById(R.id.password_input);
-        //_fullName = (EditText) view.findViewById(R.id.full_name_input);
-        //_phone = (EditText) view.findViewById(R.id.phone_input);
-        //_location = (EditText) view.findViewById(R.id.location_input);
-        _registerButton = (Button) view.findViewById(R.id.register_button);
-        //_categoriesButton = (Button) view.findViewById(R.id.categories_button);
-        _signInText = (TextView) view.findViewById(R.id.sign_in_text);
-        _signInText.setOnClickListener(this::switchToLogin);
-        _registerButton.setOnClickListener(this::register);
         _categoryList = (ListView) view.findViewById(R.id.categoryList);
-        _checkedCategories = new ArrayList<>();
 
+        Button registerButton = (Button) view.findViewById(R.id.register_button);
+        TextView signInText = (TextView) view.findViewById(R.id.sign_in_text);
+        signInText.setOnClickListener(this::switchToLogin);
+        registerButton.setOnClickListener(this::register);
 
-        ArrayList<Category> arrayList = new ArrayList<Category>();
+        ArrayList<Category> arrayList = new ArrayList<>();
         List<Category> categories = _db.categoryDao().getAll();
         CategoryListAdapter categoryListAdapter = new CategoryListAdapter(getActivity().getApplicationContext(), arrayList);
         _categoryList.setAdapter(categoryListAdapter);
+
         for(Category c : categories){
             categoryListAdapter.add(c);
         }
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -86,27 +69,37 @@ public class RegisterFragment extends Fragment {
         String username = _username.getText().toString();
         String email = _email.getText().toString();
         String password = _password.getText().toString();
-        //String fullName = _fullName.getText().toString();
-        //String phone = _phone.getText().toString();
-        //String location = _location.getText().toString();
-        View v;
-        CheckBox checkBox;
-        cats = new ArrayList<String>();
-        int checker = 0;
-        for (int i = 0; i < _categoryList.getCount(); i++) {
-            if((CheckBox)_categoryList.getChildAt(i).findViewById(R.id.categoryBox) != null){
-                CheckBox cBox=(CheckBox)_categoryList.getChildAt(i).findViewById(R.id.categoryBox);
-                if(cBox.isChecked()){
-                    checker = 1;
-                    cats.add(cBox.getText().toString());
-                }
-            }
+        InputValidationHelper inputValidationHelper = new InputValidationHelper();
 
+        ArrayList<String> categories = new ArrayList<>();
+        for (int i = 0; i < _categoryList.getCount() - 1; i++) {
+            CheckBox checkBox = (CheckBox) _categoryList.getChildAt(i).findViewById(R.id.categoryBox);
+            if(checkBox != null && checkBox.isChecked()){
+                categories.add(checkBox.getText().toString());
+            }
         }
 
-        if(checker == 0)
+        if(categories.size() == 0)
         {
             Toast.makeText(requireActivity(), "Please select at least one category", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(!inputValidationHelper.isValidEmail(email))
+        {
+            Toast.makeText(requireActivity(), "Please insert valid email address", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(!inputValidationHelper.isValidPassword(password))
+        {
+            Toast.makeText(requireActivity(), "Password should be at least 6 characters long", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(username.length() < 2)
+        {
+            Toast.makeText(requireActivity(), "Username should be at least 3 characters long", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -121,10 +114,10 @@ public class RegisterFragment extends Fragment {
         _db.userDao().add(user);
         Toast.makeText(requireActivity(), "Successful registration", Toast.LENGTH_SHORT).show();
 
-        ((MainActivity)getActivity()).userId = _db.userDao().loginUser(username, password);
+        ((MainActivity)getActivity()).userId = _db.userDao().getUserByUsername(username).getUserId();
         Long category;
-        for(String s : cats){
-             category = _db.categoryDao().getByName(s);
+        for(String categoryName : categories){
+             category = _db.categoryDao().getByName(categoryName);
              Categorized categorized = new Categorized(((MainActivity)getActivity()).userId, category );
              Log.e("User ID:", ""+categorized.getUserId());
             Log.e("Category ID:", ""+categorized.getCategoryId());

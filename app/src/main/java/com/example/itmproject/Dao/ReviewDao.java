@@ -10,5 +10,4 @@ import com.example.itmproject.Entities.Review;
 public interface ReviewDao {
     @Insert
     void addReview(Review review);
-
 }

@@ -3,6 +3,7 @@ package com.example.itmproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,14 +32,10 @@ public class EditProfile extends AppCompatActivity {
         _phone = findViewById(R.id.editPhone);
         _description = findViewById(R.id.editDescription);
         _location = findViewById(R.id.editLocation);
-
         _location.setSelection(0);
-
         _btnUpdate = findViewById(R.id.updateButton);
 
         Long userId = getIntent().getLongExtra("USER_ID", -1);
-
-
         User user = AppDatabase.getInstance(this).userDao().getUserById(userId);
 
         String[] stringArray = getResources().getStringArray(R.array.locations);
@@ -48,7 +45,6 @@ public class EditProfile extends AppCompatActivity {
                 _location.setSelection(i);
                 break;
             }
-
         }
 
         _name.setText(user.getName());
@@ -59,14 +55,27 @@ public class EditProfile extends AppCompatActivity {
         _btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User userByEmail = AppDatabase.getInstance(EditProfile.this).userDao().getUserByEmail(_email.getText().toString());
-                if(_location.getSelectedItem().equals("City")){
+                InputValidationHelper inputValidationHelper = new InputValidationHelper();
+                if(_location.getSelectedItem().equals("City"))
+                {
                     Toast.makeText(EditProfile.this, "Please select city", Toast.LENGTH_SHORT).show();
-                }else if(AppDatabase.getInstance(EditProfile.this).userDao().getUserByEmail(_email.getText().toString())!=null && !_email.getText().toString().equals(user.getEmail())){
+                }
+                else if(AppDatabase.getInstance(EditProfile.this).userDao().getUserByEmail(_email.getText().toString()) != null &&
+                        !_email.getText().toString().equals(user.getEmail()))
+                {
                     Toast.makeText(EditProfile.this, "This mail already exists", Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    AppDatabase.getInstance(EditProfile.this).userDao().updateUser(_name.getText().toString(), _phone.getText().toString(), _description.getText().toString(), _email.getText().toString(), _location.getSelectedItem().toString(), userId);
+                else if(!inputValidationHelper.isNumeric(_phone.getText().toString()))
+                {
+                    Toast.makeText(EditProfile.this, "Phone number can contain digits only", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    AppDatabase.getInstance(EditProfile.this).userDao().updateUser(_name.getText().toString(),
+                                                                                   _phone.getText().toString(),
+                                                                                   _description.getText().toString(),
+                                                                                   _email.getText().toString(),
+                                                                                   _location.getSelectedItem().toString(),
+                                                                                   userId);
                     finish();
                 }
             }

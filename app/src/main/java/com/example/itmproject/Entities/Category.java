@@ -43,15 +43,4 @@ public class Category {
                 new Category("Water")
         };
     }
-    public static List<Category> populateCategoriesToList(){
-        ArrayList<Category> categories = new ArrayList<Category>();
-        categories.add(new Category("Kitchen"));
-        categories.add(new Category("Bathroom"));
-        categories.add(new Category("Electricity"));
-        categories.add(new Category("Home appliances fix"));
-        categories.add(new Category("Outdoor"));
-        categories.add(new Category("Deep clean"));
-        categories.add(new Category("Water"));
-        return categories;
-    }
 }

@@ -1,28 +1,16 @@
 package com.example.itmproject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.example.itmproject.Entities.Category;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
     ChipNavigationBar bar;
-    private ViewPager viewPager;
     Long userId = null;
     private AppDatabase _db;
 
@@ -34,57 +22,12 @@ public class MainActivity extends AppCompatActivity {
         if(_db.categoryDao().getAll().isEmpty())
             _db.categoryDao().insertAll(Category.populateCategories());
 
-        //bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
         bar = findViewById(R.id.bottom_navigation_bar);
         bar.setItemSelected(R.id.nav_home, true);
-        //bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
-        /*viewPager = findViewById(R.id.fragment_container);
-        setUpAdapter(viewPager);*/
         bottomMenu();
-        /*viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                bottomNavigationView.getMenu().getItem(position).setChecked(true);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });*/
     }
-/*    private void setUpAdapter(ViewPager viewPager){
-        ViewPageAdapter viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        viewPageAdapter.addFragment(new HomeFragment());
-        viewPageAdapter.addFragment(new DashboardFragment());
-        viewPager.setAdapter(viewPageAdapter);
-    }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Log.d("DEBUG", "Item clicked"+item.getItemId());
-            switch (item.getItemId()){
-                case R.id.nav_home:
-                    viewPager.setCurrentItem(0);
-                    return true;
-
-                case R.id.nav_dashboard:
-                    viewPager.setCurrentItem(1);
-                    return true;
-
-                default:
-                    return false;
-            }
-        }
-    };*/
 
     private void bottomMenu(){
         bar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
@@ -100,13 +43,9 @@ public class MainActivity extends AppCompatActivity {
                         if(userId == null) fragment = new RegisterFragment();
                         else fragment = new DashboardFragment();
                         break;
-
-
                 }
-
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
             }
         });
     }
-
 }

@@ -13,7 +13,6 @@ import java.util.List;
 
 @Dao
 public interface UserDao {
-
     @Insert
     void add(User user);
 
@@ -35,6 +34,4 @@ public interface UserDao {
     @Query("UPDATE users SET name = :name, phone = :phone, description = :description, email = :email, location = :location WHERE userId = :id")
     void updateUser(String name, String phone, String description, String email, String location, Long id);
 
-    @Update
-    void signIn(User user);
 }

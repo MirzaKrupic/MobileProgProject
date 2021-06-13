@@ -14,8 +14,6 @@ import java.util.List;
 
 @Dao
 public interface UserCategorizedDao {
-
-
     @Transaction
     @Query("SELECT * FROM category WHERE categoryId = :categoryId")
     public List<CategoriyAndCategorized> categoryByUser(Long categoryId);

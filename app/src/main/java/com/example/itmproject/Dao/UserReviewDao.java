@@ -13,8 +13,7 @@ import java.util.List;
 
 @Dao
 public interface UserReviewDao {
-
     @Transaction
     @Query("SELECT * FROM reviews WHERE userId  = :userId")
-    public List<ReviewAndUser> getUserReviews(Long userId);
+    List<ReviewAndUser> getUserReviews(Long userId);
 }

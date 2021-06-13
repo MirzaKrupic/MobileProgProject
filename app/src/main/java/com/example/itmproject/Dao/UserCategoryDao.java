@@ -15,18 +15,13 @@ import java.util.List;
 
 @Dao
 public interface UserCategoryDao {
-
     @Transaction
     @Query("SELECT * FROM users")
-    public List<UserWithCategories> getUsersWithCategory();
+    List<UserWithCategories> getUsersWithCategory();
 
     @Transaction
     @Query("SELECT * FROM users WHERE userId = :id")
-    public List<UserWithCategories> getUsersWithCategoryById(Long id);
-
-    @Transaction
-    @Query("SELECT * FROM category")
-    public List<CategoryAndUser> getCategoryWithUser();
+    List<UserWithCategories> getUsersWithCategoryById(Long id);
 
     @Insert
     void add(UserCategoryCrossref userCategoryCrossref);

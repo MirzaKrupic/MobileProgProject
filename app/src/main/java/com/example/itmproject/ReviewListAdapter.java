@@ -29,10 +29,8 @@ public class ReviewListAdapter extends ArrayAdapter<Review> {
         }
 
         TextView title = (TextView) convertView.findViewById(R.id.item_title);
-        TextView description = (TextView)  convertView.findViewById(R.id.item_description);
 
         title.setText(profileAd.getComment());
-        //description.setText(String.valueOf(profileAd.getGrade()));
         int grade = profileAd.getGrade();
         ImageView star1 = convertView.findViewById(R.id.star1);
         ImageView star2 = convertView.findViewById(R.id.star2);
@@ -55,7 +53,6 @@ public class ReviewListAdapter extends ArrayAdapter<Review> {
         }else if(grade == 4){
             star1.setVisibility(View.GONE);
         }
-
 
         return convertView;
     }
