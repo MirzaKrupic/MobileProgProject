@@ -24,7 +24,7 @@ import com.example.itmproject.Entities.UserCategoryCrossref;
 import java.util.concurrent.Executors;
 
 @Database(
-        version = 11,
+        version = 13,
         entities = {
                 User.class,
                 Category.class,
