@@ -16,16 +16,8 @@ public class ProfileAd {
         return _imageResourceId;
     }
 
-    public void setImageResourceId(int imageResourceId) {
-        _imageResourceId = imageResourceId;
-    }
-
     public String getTitle() {
         return _title;
-    }
-
-    public void setTitle(String title) {
-        _title = title;
     }
 
     public String getDescription() {
