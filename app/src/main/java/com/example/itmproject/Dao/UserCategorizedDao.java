@@ -23,4 +23,5 @@ public interface UserCategorizedDao {
     @Transaction
     @Query("SELECT * FROM category WHERE categoryId = :categoryId LIMIT 1")
     public CategoriyAndCategorized oneCategoryByUser(Long categoryId);
+
 }

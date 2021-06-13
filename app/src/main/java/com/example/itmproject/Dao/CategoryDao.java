@@ -15,6 +15,9 @@ public interface CategoryDao {
     @Query("SELECT * FROM category")
     List<Category> getAll();
 
+    @Query("SELECT name FROM category")
+    List<String> getAllCategoryNames();
+
     @Query("SELECT categoryId FROM category WHERE name = :name LIMIT 1")
     Long getByName(String name);
 

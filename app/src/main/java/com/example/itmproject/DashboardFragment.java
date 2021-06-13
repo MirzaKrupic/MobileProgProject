@@ -47,7 +47,7 @@ public class DashboardFragment extends Fragment {
     private Long checkUser;
     private AppDatabase _db;
     private TextView _name, _email, _location, _phone, _description;
-    private FloatingActionButton openOptions;
+    private FloatingActionButton openOptions, logoutBtn;
 
     private final int PICK_IMAGE_REQUEST = 71;
 
@@ -79,6 +79,17 @@ public class DashboardFragment extends Fragment {
                 Intent intent = new Intent(requireActivity(), EditProfile.class);
                 intent.putExtra("USER_ID", ((MainActivity) Objects.requireNonNull(getActivity())).userId);
                 startActivity(intent);
+            }
+        });
+
+        logoutBtn = view.findViewById(R.id.logoutButton);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(requireActivity(), "Successfully logged out", Toast.LENGTH_SHORT).show();
+                ((MainActivity)getActivity()).userId = null;
+
+                ((MainActivity)getActivity()).bar.setItemSelected(R.id.nav_home, true);
             }
         });
 

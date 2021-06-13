@@ -1,5 +1,11 @@
 package com.example.itmproject;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -74,6 +81,7 @@ public class RegisterFragment extends Fragment {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void register(View view){
         String username = _username.getText().toString();
         String email = _email.getText().toString();
@@ -84,14 +92,22 @@ public class RegisterFragment extends Fragment {
         View v;
         CheckBox checkBox;
         cats = new ArrayList<String>();
+        int checker = 0;
         for (int i = 0; i < _categoryList.getCount(); i++) {
             if((CheckBox)_categoryList.getChildAt(i).findViewById(R.id.categoryBox) != null){
                 CheckBox cBox=(CheckBox)_categoryList.getChildAt(i).findViewById(R.id.categoryBox);
                 if(cBox.isChecked()){
+                    checker = 1;
                     cats.add(cBox.getText().toString());
                 }
             }
 
+        }
+
+        if(checker == 0)
+        {
+            Toast.makeText(requireActivity(), "Please select at least one category", Toast.LENGTH_LONG).show();
+            return;
         }
 
         if(_db.userDao().getUserByUsername(username) != null)
@@ -114,6 +130,9 @@ public class RegisterFragment extends Fragment {
             Log.e("Category ID:", ""+categorized.getCategoryId());
             _db.categorizedDaoDao().addCategorized(categorized);
         }
+
+        show_Notification();
+
         ((MainActivity)getActivity()).bar.setItemSelected(R.id.nav_home, true);
     }
 
@@ -123,5 +142,28 @@ public class RegisterFragment extends Fragment {
         ft.setReorderingAllowed(true);
         ft.replace(R.id.fragment_container, new LoginFragment(), null);
         ft.commit();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void show_Notification(){
+
+        Intent intent=new Intent(requireActivity(),MainActivity.class);
+        String CHANNEL_ID="MYCHANNEL";
+        NotificationChannel notificationChannel=new NotificationChannel(CHANNEL_ID,"name", NotificationManager.IMPORTANCE_LOW);
+        PendingIntent pendingIntent=PendingIntent.getActivity(requireActivity(),1,intent,0);
+        Notification notification=new Notification.Builder(requireActivity(),CHANNEL_ID)
+                .setContentText("Please fill your profile in order to appear on main list")
+                .setContentTitle("Attention needed")
+                .setContentIntent(pendingIntent)
+                .addAction(android.R.drawable.sym_action_chat,"Profile needed",pendingIntent)
+                .setChannelId(CHANNEL_ID)
+                .setSmallIcon(android.R.drawable.sym_action_chat)
+                .build();
+
+        NotificationManager notificationManager=(NotificationManager) requireActivity().getSystemService(requireActivity().NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(notificationChannel);
+        notificationManager.notify(1,notification);
+
+
     }
 }

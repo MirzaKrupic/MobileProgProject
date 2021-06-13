@@ -9,6 +9,7 @@ public class ProfileAd {
         _imageResourceId = imageResourceId;
         _title = title;
         _description = description;
+
     }
 
     public int getImageResourceId() {
